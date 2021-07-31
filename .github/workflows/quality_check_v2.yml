@@ -10,7 +10,7 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: true
-          MYSQL_DATABASE: londom_annuaire
+          MYSQL_DATABASE: symfony
         ports:
           - 3306/tcp
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -55,7 +55,7 @@ jobs:
           php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
           php bin/console hautelook:fixtures:load -q
         env:
-          DATABASE_URL: mysql://root@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/londom_annuaire
+          DATABASE_URL: mysql://root@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
 
       - name: PHPStan - Run
         run: if [ -f ruleset/phpstan.neon ]; then vendor/bin/phpstan analyse -c ruleset/phpstan.neon src/ ; else echo PHPStan ruleset file does not exist, skipping step ; fi
@@ -68,3 +68,8 @@ jobs:
 
       - name: Checks security issues - Run
         run: symfony security:check
+        
+      - name: Run Behat Testing
+        run: behat --colors --strict --no-interaction -f progress || behat --colors --strict -vvv --no-interaction --rerun
+        env:
+          DATABASE_URL: mysql://root@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
