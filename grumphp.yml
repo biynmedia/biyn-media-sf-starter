@@ -1,0 +1,35 @@
+grumphp:
+    ascii:
+        failed: ~
+        succeeded: ~
+    tasks: # see https://github.com/phpro/grumphp/tree/master/doc/tasks and https://github.com/phpro/grumphp/blob/master/doc/commands.md
+        composer:
+            no_check_all: true
+        #        git_blacklist:
+        #            keywords:
+        #                - 'var_dump'
+        #                - 'dump'
+        #                - 'print_r'
+        #                - 'die'
+        #                - 'console\.'
+        #            triggered_by: [php, twig, js]
+        jsonlint:
+            detect_key_conflicts: true
+        phpcpd:
+            directory:
+                - src
+        phplint:
+            exclude: ['vendor']
+            triggered_by: ['php']
+        phpmd:
+            ruleset: ['ruleset/.php_md.xml']
+        phpstan:
+            level: ~
+            configuration: 'ruleset/phpstan.neon'
+            memory_limit: "-1"
+        securitychecker_symfony: ~
+        yamllint:
+            parse_custom_tags: true
+        twigcs:
+            path: 'src/'
+            severity: error

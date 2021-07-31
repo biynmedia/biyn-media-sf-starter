@@ -1,0 +1,28 @@
+parameters:
+    level: max
+    reportUnmatchedIgnoredErrors: false
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+
+    excludes_analyse:
+        # Makes PHPStan crash
+        - ../src/DependencyInjection/Configuration.php
+        - ../src/Security/LoginFormAuthenticator.php
+        - ../src/Form/User/UserType.php
+        - ../src/Migrations/
+
+        # Test dependencies
+        - ../tests
+
+        # PHPSpec
+        - ../spec
+
+        # Excluded Folder
+        - ../public
+        - ../themes
+
+    ignoreErrors:
+        - '/Parameter #1 \$configuration of method Symfony\Component\DependencyInjection\Extension\Extension::processConfiguration\(\) expects Symfony\Component\Config\Definition\ConfigurationInterface, Symfony\Component\Config\Definition\ConfigurationInterface\|null given./'
+        - '#^Method [\w\\]+Type::render\(\) has parameter \$[\w]+ with no typehint specified.$#'
+        - '#Cannot call method [a-zA-Z0-9]+\(\) on Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface\|null.#'
+        #- '/Parameter #1 \$userIdentifier of class Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge constructor expects string, bool|float|int|string|null given./'
